@@ -1,7 +1,39 @@
+html body {
+    margin: 0px;
+    display: flex;
+}
+
 .game_container {
     width: 500px;
     height: 730px;
     position: absolute;
+}
+
+.border-right {
+    width: 80px;
+    height: 790px;
+    position: absolute;
+    background-color: #ffffff;
+    z-index: +1;
+    left: 500px;
+}
+
+.border-top {
+    width: 660px;
+    height: 50px;
+    position: absolute;
+    background-color: #ffffff;
+    z-index: +2;
+    top: -50px;
+}
+
+.border-bottom {
+    width: 660px;
+    height: 50px;
+    position: absolute;
+    background-color: #ffffff;
+    z-index: +2;
+    top: 730px;
 }
 
 .sky {
@@ -17,6 +49,7 @@
     height: 150px;
     position: absolute;
     top: 580px;
+    z-index: 1;
 }
 
 .bird {
@@ -28,6 +61,16 @@
 
 .obstacle {
     background-color: green;
+    /* background-image: url(''); */
+    width: 60px;
+    height: 300px;
+    position: absolute;
+}
+
+.topObstacle {
+    background-color: green;
+    /* background-image: url(''); */
+    transform: rotate(180deg);
     width: 60px;
     height: 300px;
     position: absolute;

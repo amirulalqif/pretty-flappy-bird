@@ -10,6 +10,11 @@ document.addEventListener('DOMContentLoaded' , () => {
     // setting gravity
     let gravity = 2
 
+    // when it's true, gameover
+    let isGameOver = false
+
+    let gap = 470
+
     // adding the defalt location 
     function startGame() {
         birdBottom -= gravity
@@ -18,7 +23,7 @@ document.addEventListener('DOMContentLoaded' , () => {
     }
 
     // makes te bird go down
-    let timerId = setInterval(startGame, 20)
+    let gameTimerId = setInterval(startGame, 20)
 
     // e as an event
     function control(e) {
@@ -41,10 +46,47 @@ document.addEventListener('DOMContentLoaded' , () => {
         let randomHeight = Math.random() * 60
         let obstacleBottom = randomHeight
         const obstacle = document.createElement('div')
-        obstacle.classList.add('obstacle')
+        const topObstacle = document.createElement('div')
+        if (!isGameOver) {
+            obstacle.classList.add('obstacle')
+            topObstacle.classList.add('topObstacle')
+        }
         gameDisplay.appendChild(obstacle)
+        gameDisplay.appendChild(topObstacle)
         obstacle.style.left = obstacleLeft + 'px'
+        topObstacle.style.left = obstacleLeft + 'px'
         obstacle.style.bottom = obstacleBottom + 'px' 
+        topObstacle.style.bottom = obstacleBottom + gap + 'px' 
+        
+        // moving obstacle right to left
+        function moveObstacle() {
+            obstacleLeft -= 2
+            obstacle.style.left = obstacleLeft + 'px'
+            topObstacle.style.left = obstacleLeft + 'px'
+
+            if (obstacleLeft === -60) {
+                clearInterval(timerId)
+                gameDisplay.removeChild(obstacle)
+                gameDisplay.removeChild(topObstacle)
+            }
+            if (
+                obstacleLeft > 200 && obstacleLeft < 280 && birdLeft === 220 &&
+                (birdBottom < obstacleBottom + 130 || birdBottom > obstacleBottom + gap -230) ||
+                birdBottom === 0) {
+                gameOver()
+                clearInterval(timerId)
+            }
+        }
+
+        // create an obstacle every three seconds
+        let timerId = setInterval(moveObstacle, 20)
+        if (!isGameOver) setTimeout(generateObstacle, 3000)
     }
     generateObstacle()
+
+    function gameOver() {
+        clearInterval(gameTimerId)
+        isGameOver = true
+        document.removeEventListener('keyup', control)
+    }
 })
